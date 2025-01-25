@@ -108,7 +108,10 @@ defaults:
       related: false
       show_date: true
       sidebar:
-        nav: "categories"
+        # nav: "categories" # This is for single sidebar
+        nav:
+          - categories
+          # - other...  # now is use multiple sidebars
   # _pages
   - scope:
       path: "_pages"
