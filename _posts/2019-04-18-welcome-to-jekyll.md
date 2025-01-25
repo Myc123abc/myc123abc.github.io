@@ -8,9 +8,9 @@ tags:
   - update
 
 toc: true
-# toc_sticky: true
-# toc_label: "Label"
+toc_label: "Table of contents"
 # toc_icon: "cog"
+# toc_sticky: true
 
 excerpt: "description"
 ---
