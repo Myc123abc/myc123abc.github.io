@@ -9,7 +9,7 @@ tags:
 
 toc: true
 toc_label: "Table of contents"
-# toc_icon: "cog"
+toc_icon: "list"
 # toc_sticky: true
 
 excerpt: "description"
