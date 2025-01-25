@@ -22,8 +22,8 @@ email: mayuncong222@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   This site is for recording the development of my galgame engine!
 
-twitter_username: username
-github_username: username
+# twitter_username: username
+github_username: Myc123abc
 minimal_mistakes_skin: default
 search: true
 
@@ -78,17 +78,17 @@ author:
     #   icon: "fab fa-fw fa-instagram"
     #   url: "https://instagram.com/"
 
-footer:
-  links:
-    # - label: "Twitter"
-    #   icon: "fab fa-fw fa-twitter-square"
-    #   url: "https://twitter.com/"
-    # - label: "GitHub"
-    #   icon: "fab fa-fw fa-github"
-    #   url: "https://github.com/"
-    # - label: "Instagram"
-    #   icon: "fab fa-fw fa-instagram"
-    #   url: "https://instagram.com/"
+# footer:
+#   links:
+#     - label: "Twitter"
+#       icon: "fab fa-fw fa-twitter-square"
+#       url: "https://twitter.com/"
+#     - label: "GitHub"
+#       icon: "fab fa-fw fa-github"
+#       url: "https://github.com/"
+#     - label: "Instagram"
+#       icon: "fab fa-fw fa-instagram"
+#       url: "https://instagram.com/"
 
 enable_copy_code_button: true
 atom_feed:
@@ -101,11 +101,11 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       read_time: false
-      comments: true
-      share: true
-      related: true
+      comments: false
+      share: false
+      related: false
       show_date: true
   # _pages
   - scope:
