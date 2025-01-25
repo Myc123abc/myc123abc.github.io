@@ -91,6 +91,8 @@ footer:
     #   url: "https://instagram.com/"
 
 enable_copy_code_button: true
+atom_feed:
+  hide: true
 
 defaults:
   # _posts
