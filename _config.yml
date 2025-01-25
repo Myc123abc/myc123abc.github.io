@@ -93,6 +93,8 @@ author:
 enable_copy_code_button: true
 atom_feed:
   hide: true
+sidebar:
+  nav: "categories"
 
 defaults:
   # _posts
