@@ -90,6 +90,8 @@ footer:
     #   icon: "fab fa-fw fa-instagram"
     #   url: "https://instagram.com/"
 
+enable_copy_code_button: true
+
 defaults:
   # _posts
   - scope:
@@ -103,7 +105,6 @@ defaults:
       share: true
       related: true
       show_date: true
-      copy_code_button: true
   # _pages
   - scope:
       path: "_pages"
