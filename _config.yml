@@ -93,8 +93,6 @@ author:
 enable_copy_code_button: true
 atom_feed:
   hide: true
-sidebar:
-  nav: "categories"
 
 defaults:
   # _posts
@@ -109,6 +107,8 @@ defaults:
       share: false
       related: false
       show_date: true
+      sidebar:
+        nav: "categories"
   # _pages
   - scope:
       path: "_pages"
