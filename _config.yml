@@ -103,7 +103,7 @@ defaults:
       share: true
       related: true
       show_date: true
-      enable_copy_code_button: true
+      copy_code_button: true
   # _pages
   - scope:
       path: "_pages"
