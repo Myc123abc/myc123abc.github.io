@@ -8,6 +8,7 @@ main:
   - title: "About"
     url: /about/
 
+# OK, maybe sidebar is not use for dictionaries like _pages, or _xxxx
 categories:
   - title: Galgame Engine (Learning...)
     children:
