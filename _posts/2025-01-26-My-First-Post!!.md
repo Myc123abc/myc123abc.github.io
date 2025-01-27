@@ -16,21 +16,28 @@ So now just use the template to write my blog. There must have a start right?
 OK! Let's Go go!
 
 # Test
-Left aligned text.
-sad
-a
 
-as
 {: .text-left}
-
-Center aligned text.
-asf
-as
+Left aligned text.
 
 {: .text-center}
-
-Right aligned text.
-aa
-2q
+Center aligned text.
 
 {: .text-right}
+Right aligned text.
+
+{: .text-justify}
+Justified text.
+Justified text.
+Justified text.
+Justified text.
+Justified text.
+Justified text.
+Justified text.
+Justified text.
+Justified text.
+
+{: .text-nowrap}
+No wrap text.
+No wrap text.
+No wrap text.
