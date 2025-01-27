@@ -7,6 +7,7 @@ OK! This is my first post and I'm exciting to start recording my galgame engine 
 
 Well, my english is so ~ bad. enmmm, I recept. Ha ha.
 
+{: .text-justify}
 Well, now, I'm still learn knowledge which is required for develop game engine.
 And I'm only out from college not half year!
 I'm so unexperence, learn learn learn. How many time I need to spand until I'm really start to develop galgame engine... I don't know, but let's start learning! For my goal, Galgame Engine!!
@@ -39,5 +40,7 @@ Justified text.
 
 {: .text-nowrap}
 No wrap text.
+
 No wrap text.
+
 No wrap text.
