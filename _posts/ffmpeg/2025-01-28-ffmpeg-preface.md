@@ -27,7 +27,7 @@ libsndfile无法完美处理绝大多数的音频文件之后，我又试了试�
 
 祝我旅途愉快！哈哈
 
-#### 教程使用资源
-[【音视频】FFmpeg音视频入门到精通+实战课] https://www.bilibili.com/video/BV1a1421k7Eo/?share_source=copy_web&vd_source=a7a41f3d15bc29932773f2e4a2a6d792
+#### 教程使用的资源(Resources)
+[【音视频】FFmpeg音视频入门到精通+实战课]: https://www.bilibili.com/video/BV1a1421k7Eo/?share_source=copy_web&vd_source=a7a41f3d15bc29932773f2e4a2a6d792
 
 什么b站大学，哈哈。慕课网最有用的一次（这个课程还挺新的，不过我是直接跳到ffmpeg lib的地方开始的）
