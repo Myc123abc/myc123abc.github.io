@@ -1,7 +1,7 @@
 ---
 title: "ffmpeg Environment Configuration"
 excerpt: "ffmpeg开发环境的搭建"
-date:2025-01-28T12:00:00+08:00
+date: 2025-01-28T12:00:00+08:00
 categories:
   - blog
 tags:
