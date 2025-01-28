@@ -3,6 +3,10 @@ permalink: /about/
 title: "About"
 ---
 
-Tempor velit sint sunt ipsum tempor enim ad qui ullamco. Est dolore anim ad velit duis dolore minim sunt aliquip amet commodo labore. Ut eu pariatur aute ea aute excepteur laborum. Esse ea esse excepteur minim mollit qui cillum excepteur ex dolore magna. Labore deserunt fugiat incididunt incididunt sint ea. Consequat dolore aute laboris quis proident quis non et est consectetur ex eiusmod sit culpa.
+我的梦想是创建出一个galgame engine，任何人都可以用它轻易的撰写自己的故事，让故事以galgame的方式去表达。
 
-Cupidatat ea do et in excepteur in. Ad nostrud ut est esse eu duis ea sunt eiusmod. Aliquip tempor veniam sint elit fugiat. Velit incididunt laboris amet incididunt labore dolore irure velit excepteur commodo deserunt laborum. Consectetur eu fugiat veniam veniam Lorem labore magna eiusmod. Ea occaecat reprehenderit pariatur consectetur minim labore ut aliquip.
+我希望只需要创作者一个人，仅需要去用自己的手去敲打键盘，写出自己故事的剧本，就可以生成一个galgame所必要的一切。
+
+不需要任何编程知识，以及什么其他需要学习的，与写作不想关的东西。就是一个人，想要表达自己的故事即可。
+
+当然不仅局限于此，好的engine肯定要有更多花样的，一个最大的特点就是要有定制化特性，以及更为进阶的插件之类乱七八糟的东西。当然，这些都是后话，我先赶紧把知识学玩，然后开始新建文件夹吧哈哈！
