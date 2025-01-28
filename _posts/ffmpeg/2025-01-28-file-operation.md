@@ -15,24 +15,24 @@ tags:
 **注意：** 代码展示处我就不重复放include的了，如果有变动的话我会标出来
 {: .notice}
 ```cpp
-    auto path = "D:\\music\\四季ノ唄.mp3";
+auto path = "D:\\music\\四季ノ唄.mp3";
 
-    AVIOContext* ctx;
-    int ret;
+AVIOContext* ctx;
+int ret;
 
-    ret = avio_open(&ctx, path, AVIO_FLAG_READ);
-    if (ret < 0)
-    {
-        av_log(nullptr, AV_LOG_ERROR, "Can't open %s: %s\n", path, av_err2str(ret));
-        exit(EXIT_FAILURE);
-    }
+ret = avio_open(&ctx, path, AVIO_FLAG_READ);
+if (ret < 0)
+{
+    av_log(nullptr, AV_LOG_ERROR, "Can't open %s: %s\n", path, av_err2str(ret));
+    exit(EXIT_FAILURE);
+}
 
-    ret = avio_close(ctx);
-    if (ret < 0)
-    {
-        av_log(nullptr, AV_LOG_ERROR, "Can't close %s: %s\n", path, av_err2str(ret));
-        exit(EXIT_FAILURE);
-    }
+ret = avio_close(ctx);
+if (ret < 0)
+{
+    av_log(nullptr, AV_LOG_ERROR, "Can't close %s: %s\n", path, av_err2str(ret));
+    exit(EXIT_FAILURE);
+}
 ```
 `AVIOContext`就是读取文件成功后所获得的信息。
 
@@ -44,15 +44,15 @@ tags:
 
 然后是目录的操作。
 ```cpp
-    auto dir = "D:\\music";
+auto dir = "D:\\music";
 
-    AVIODirContext* dirCtx;
-    ret = avio_open_dir(&dirCtx, dir, nullptr);
-    if (ret < 0)
-    {
-        av_log(nullptr, AV_LOG_ERROR, "Can't open %s: %s\n", dir, av_err2str(ret));
-        exit(EXIT_FAILURE);
-    }
+AVIODirContext* dirCtx;
+ret = avio_open_dir(&dirCtx, dir, nullptr);
+if (ret < 0)
+{
+    av_log(nullptr, AV_LOG_ERROR, "Can't open %s: %s\n", dir, av_err2str(ret));
+    exit(EXIT_FAILURE);
+}
 ```
 `AVIODirContext`是用来接受打开的目录的信息。
 
