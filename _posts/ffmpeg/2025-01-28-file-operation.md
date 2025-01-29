@@ -1,6 +1,6 @@
 ---
 title: "ffmpeg File Operation"
-excerpt: "ffmpeg中文件操作"
+excerpt: "ffmpeg文件操作"
 date: 2025-01-28T22:14:00+08:00
 categories:
   - blog
