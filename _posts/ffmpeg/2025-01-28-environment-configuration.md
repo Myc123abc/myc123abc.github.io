@@ -6,6 +6,9 @@ categories:
   - blog
 tags:
   - ffmpeg
+
+sidebar:
+  nav: "ffmpeg"
 ---
 
 目前所使用的ffmpeg版本是7.1。

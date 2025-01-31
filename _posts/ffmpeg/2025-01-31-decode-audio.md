@@ -7,6 +7,9 @@ categories:
 tags:
   - ffmpeg
 
+sidebar:
+  nav: "ffmpeg"
+
 toc: true
 toc_label: "目录"
 toc_icon: "list"

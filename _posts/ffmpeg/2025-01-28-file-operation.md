@@ -6,6 +6,9 @@ categories:
   - blog
 tags:
   - ffmpeg
+
+sidebar:
+  nav: "ffmpeg"
 ---
 
 很好，没想到这么快就踩坑了。待会儿我会提到。
