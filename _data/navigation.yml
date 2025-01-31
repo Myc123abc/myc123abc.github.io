@@ -10,16 +10,20 @@ main:
 
 # OK, maybe sidebar is not use for dictionaries like _pages, or _xxxx
 categories:
-  - title: Galgame Engine (Learning...)
+  - title: Audio
     children:
-      - title: "DirectX12"
-        url: /_pages/about.md
-      - title: "game engine arch"
-        url: /_pages/404.md
       - title: "ffmpeg"
-        url: /_pages/404.md
+        url: /
+  # - title: Galgame Engine (Learning...)
+  #   children:
+  #     - title: "DirectX12"
+  #       url: /_pages/about.md
+  #     - title: "game engine arch"
+  #       url: /_pages/404.md
+  #     - title: "ffmpeg"
+  #       url: /_pages/404.md
   
-  - title: Other
-    children:
-      - title: "other (none)"
-        url: /_pages/404.md
+  # - title: Other
+  #   children:
+  #     - title: "other (none)"
+  #       url: /_pages/404.md
