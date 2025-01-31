@@ -10,7 +10,7 @@ main:
 
 ffmpeg:
   - title: ffmpeg
-    childern:
+    children:
       - title: preface
         url: /blog/preface
       - title: environment configuration
@@ -27,7 +27,7 @@ ffmpeg:
 # OK, maybe sidebar is not use for dictionaries like _pages, or _xxxx
 # categories:
 #   - title: Galgame Engine (Learning...)
-#     childern:
+#     children:
 #       - title: "DirectX12"
 #         url: /_pages/about.md
 #       - title: "game engine arch"
@@ -36,6 +36,6 @@ ffmpeg:
 #         url: /_pages/404.md
   
 #   - title: Other
-#     childern:
+#     children:
 #       - title: "other (none)"
 #         url: /_pages/404.md
