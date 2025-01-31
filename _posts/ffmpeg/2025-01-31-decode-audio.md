@@ -43,6 +43,8 @@ ___
 
 这里的ID3 tag，是mp3文件格式的一种非标准的容器格式，具体的内容自己去google吧。总之在处理mp3文件用ffmpeg时要手动跳过这个tag，ffmpeg不会自己跳过，因此导致在解码第一个packet时会找不到"正确的"（ffmpeg所认为的）mp3 packet从而导致`avcodec_send_packet`失败（这是解码时会用到的一个func）。
 
+再说一嘴，不同的项目的解码范围都不一样，就比如ffmpeg和libsndfile（一个c库，主要用于各种音频格式的io）都是不对mp3的ID3 tag进行处理的（好吧，libsndfile的我没测试，只是当年使用时也会有部分mp3文件解码失败）。minimp3（一个专门用于解码mp3的c库，其实就一个头文件）倒是可以很好的处理ID3 tag，不需要你手动处理就能正常解码。
+
 具体想要了解为什么的话可以参考下这个link[mp3 decoding using ffmpeg API (Header missing)][mp3 decoding using ffmpeg API (Header missing)]。
 
 吐槽一下，这个回答的老哥他只说了现象但没说具体解决的方式，导致我当年学习ffmpeg时即便找到了这个帖子，也半天没能解决问题，遂放弃。只能说还是当初太年轻了哈哈哈。
@@ -58,7 +60,7 @@ decoder就是实际用于解码的玩意儿。用`avcodec_find_decoder`去生成
 
 parser的创建也是需要指定类型的，这里就直接用decoder的id数据来指定，调用的就是`av_parser_init(decoder->id)`。
 
-哦对了，还有，decoder只进行初始化时不行的，你还需要干两件事，创建decoder解码用的上下文`AVCodecContext`以及打开decoder。
+哦对了，还有，decoder只进行初始化是不行的，你还需要干两件事，创建decoder解码用的上下文`AVCodecContext`以及打开decoder。
 
 `AVCodecContext`，decoder context。context就是上下文，那这个context是什么呢，你把decoder想成一种工具，而context就是使用这个工具的工作台一样就行，就像opengl也有context来着？状态机那种，你用decoder进行的所有操作，它操作所生成的中间数据都是要保存在context中的，一些我们重点关注的就有`sample_rate`，`ch_layout`一些什么的，具体到就是当前所解码的packet它的音频的基本信息，采样率和通道数等等。（所以这也是我说为啥前面几章也不那么重要的原因之一啦，比如说你想知道的音频文件的基本信息就可以从这里获取，虽然也可以用avformat就是了）
 
@@ -72,11 +74,14 @@ packet就是包，在ffmpeg中，packet就是直接从原始数据中取出来�
 frame就是帧，ffmpeg中frame用来存储解码后的数据，就是从packet中解码后的。
 
 **注意：**这里有一点是我也没弄明白的，就是解码过程中使用的临时缓冲区（不是pcm的），为什么空间要预留RefillThresh的部分，即使我从代码中看这部分的空间并没有直接使用到。所以感觉是ffmpeg内部解码中会用到这部分空间，或者是其他特殊的音频格式需要有额外的空间进行其他操作吧。总之用ffmpeg解码时临时buffer就多预留这点儿就行，不过ffmpeg官方已经给过你标准的buffer大小了直接用就行哈哈。
+
+好吧，我还是要承认我对于ffmpeg更多是以一个使用的心态而不是求知者的心态，以至于大多时候我只要会用就满足了，并不会深究太多细节。
 {: .notice}
 
 # 解码
 终于到这部分了，也是最难的了吧。
 
+## 循环部分的处理
 解码这部分你怎么写都行，这里用的跟官方给的例子一样，先是直接读取一个buffer的数据，然后进入循环去处理。
 ```cpp
 auto readSize = fread(buffer, 1, BufferSize, file);
@@ -104,7 +109,7 @@ decCtx就是AVCodecContext，用于辅助parser提供必要数据来进行解析
 data += ret;
 readSize -= ret;
 ```
-第一个就是正常的指针移动没什么好说的，指定到当前已经解码完的位置。
+第一个就是正常的指针移动没什么好说的，指定到当前已经解析完的位置。
 
 第二个是什么嘞，readSize是你要解码的raw data的size，而你使用parser解析成packet时并不会一次性就把所有的readSize全都解析成一个packet，实际中你一个readSize包含不止一个packet的数据，甚至也不一定是整数个packet，比如二点五条哈哈，这也引入了之后一个处理我待会再说。
 
@@ -138,22 +143,23 @@ ffmpeg要求，为了保证解析的流畅性，即不会出现中途解析数�
 
 `memmove`就是将当前剩余未解析的数据移回到buffer开头，用于下次解析。（就像你没吃完的剩饭留着下次吃一样哈哈）
 
-然后重置data指针回到开头，之后的`fread`就是从file中读取剩余的部分（BufferSize - readSize）到buffer，来保证带解析数据充足（其实之后些音频库的流式播放时也可以这样哈）
+然后重置data指针回到开头，之后的`fread`就是从file中读取剩余的部分（BufferSize - readSize）到buffer，来保证待解析数据充足（其实之后写音频库的流式播放时也可以这样哈）
 
-最后一个if判断就是读到的数据大小重新加入到readSize中，没有的话就代表没啥数据可读了，eof了（google去）。
+最后一个if判断就是将读到的数据大小重新加入到readSize中，没有的话就代表没啥数据可读了，eof了（google去）。
 
-哦对了还有点没提，`RefillThresh`除了保证解析数据充足外还有一点（甚至这点才是真正重要的），那就是防止剩余数据不满一包从而导致陷入死循环（虽然我没尝试过但我时这么认为的）。
+哦对了还有点没提，`RefillThresh`除了保证解析数据充足外还有一点（甚至这点才是真正重要的），那就是防止剩余数据不满一包从而导致陷入死循环（虽然我没尝试过但我是这么认为的）。
 
 前面说过readSize中的数据并不一定是整数个packet，这就导致了会有一种情况，即某一次解析时parser发现剩余数据不满一个packet返回ret为0，并且pkt->data与pkt->size中都为0，从而导致无效操作无效解码。然后你又没有检查阈值重新填充的操作，这就导致buffer中一直都剩余着不满一包的数据，parser又解析不了，于是就一直陷入死循环了。
 
 等等，你说eof的情况会怎么样？对啊！我怎么没发现，看来我的推测还是有点儿问题的，debug一下去。
 
-......
+wait a minute...
 
-好吧，果然还是要debug一下的。当buffer中剩余数据不满一包时，parse后的ret返回仍为剩余的readSize（比如需要400bytes来解码一包，但readSize为100的情况），但pkt->data和pkt->size仍为0。所以没有阈值检测的话就直接跳出循环了而不是死循环，导致最终解析的数据不完整。
+好吧，果然还是要debug一下的。当buffer中剩余数据不满一包时，parse后的ret返回仍为剩余的readSize（比如需要400bytes来解码一包，但readSize为100的情况），但pkt->data和pkt->size仍为0。(readSize -= ret)导致readSize为0，所以没有阈值检测的话就直接跳出循环了而不是死循环，导致最终解析的数据不完整。
 
 而阈值检查并填充数据保证解析一直进行，并在最后eof中填充完最后的数据，以至于parse可以解析到最后一个包从而退出。（parse就是说的`av_parser_parse2`哦）
 
+## 循环结束后处理
 最后，在整个循环结束后还有一段处理。
 ```cpp
 pkt->data = nullptr;
@@ -162,7 +168,71 @@ decode(decCtx, pkt, frame, pcm);
 ```
 这部分将pkt中的数据清零并重新解码的原因是，decCtx中可能会存有未解码的数据，所以需要将剩余的数据全部解码完。可能有点儿抽象，你把它想成cpp中的cout，cout所打印的数据并不会在调用它时直接输出，而是在buffer满了后或程序退出时才会全部输出，这就导致有时你认为它已经输出了，但实际cout的buffer中仍有剩余数据，所以在必要的时候需要cout flush来手动强制输出。这里的decCtx也是一样的，只不过它并不会在程序退出时自动解码剩余数据，所以你仍需要手动decode一下，并且packet的data与size要清零，以至于让ffmpeg知道，你要解码的是decCtx中的剩余数据。（这里的decCtx就是decoder Context应该不会有人不知道吧哈哈）
 
-OK，至此，所有的mp3的原始数据都被解码到了pcm中，你可以后续利用这些数据做任何事情，比如在我的源码中最后用xaudio2进行了播放，（xaudio2的部分以后再说喽）。还有一点，播放的话你直接解码完整个文件再播放还是太慢了，在我的surface go2上（奔腾黄金处理器！）要等待25秒左右才能解码完然后才能听到音乐的播放。
+## 解码packet到frame
+然后是重头戏，`decode`的部分了。解码packet到frame的那个decode。
+```cpp
+static void decode(AVCodecContext* decCtx, AVPacket* pkt, AVFrame* frame, std::vector<uint8_t>& pcm)
+{
+    // send the packet with the compressed data to the decoder
+    auto ret = avcodec_send_packet(decCtx, pkt);
+    exitIf(ret < 0, "Error submitting the packet to the decoder");
+
+    // read all the output frames
+    while (ret >= 0)
+    {
+        // decode compressed data to the frame
+        ret = avcodec_receive_frame(decCtx, frame);
+        if (ret == AVERROR(EAGAIN) || // the remaining data in the packet 
+                                      // is not enough to decode a complete frame
+            ret == AVERROR_EOF)       // end of file
+        {
+            return;
+        }
+        else
+        {
+            exitIf(ret < 0, "Error during decoding");
+        }
+
+        // get number of bytes per sample
+        auto dataSize = av_get_bytes_per_sample(decCtx->sample_fmt);
+        exitIf(dataSize < 0, "Failed to calculate data size");
+
+        // store decoded data
+        for (int i = 0; i < frame->nb_samples; ++i)
+        {
+            for (int ch = 0; ch < decCtx->ch_layout.nb_channels; ++ch)
+            {
+                pcm.insert(pcm.end(),
+                           frame->data[ch] + dataSize * i,
+                           frame->data[ch] + dataSize * (i + 1));
+            }
+        }
+    }
+}
+```
+`avcodec_send_packet`就是将packet中的数据放到decoder context中用于解码。
+
+这里就涉及到ID3 tag的问题。如果你没有跳过ID3 tag直接解码mp3文件，这个func就会报错，并且报错信息就是`Header missing`，即无法找到头部信息（用来表述音频数据的布局，ffmpeg并不会识别ID3 tag来自动跳过，你要手动滴）。
+
+然后进入循环，开始将packet中所有的数据解码到frame，并将frame中解码后的数据存储到pcm中。（或其他你自己用于保存解码后数据的东西）
+
+`avcodec_receive_frame`就是解码到frame，其返回值为`AVERROR(EAGAIN)`表示当前packet剩余数据不足以解码到一个完整的frame，直接返回，这部分的剩余数据留到下一次decode时构成完整frame来使用。`AVERROR_EOF`就是packet的数据全部解码完了，退出就行。
+
+然后是`av_get_bytes_per_sample`，用于获取当前音频数据样本的字节大小，就比如mp3的FLT或FLT格式中，样本类型为float，字节大小也就为32了。这里的FLT就是float的缩写，表示mp3存储音频中单个sample的数据格式。样本sample就代表一个单独的音频数据，就像你在音频可视化分析器中看到的声波的一个突起一样。FLTP的P是Planar的缩写，表示平面的意思，这里是说明当前mp3文件的多声道的样本是单独存储而非交错存储的。举个例子。
+```
+FLT:
+[L][R][L][R]
+
+FLTP:
+[L][L][R][R]
+```
+现在看懂了吧，L就是左声道的sample，R是右声道的。FLT是交错存储而FLTP是平面存储。
+
+最后就是遍历每一个样本和每一个声道，从而获取每一个样本值（当然是解码后的），并将样本值存储到你希望保存到的地方，这里就是pcm。你甚至可以直接将所有样本值存到一个txt文件中，只要你想。哈哈
+
+# 结语
+
+OK，至此，所有的mp3的原始数据都被解码到了pcm中，你可以后续利用这些数据做任何事情，比如在我的源码中最后用xaudio2进行了播放，（xaudio2的部分以后再说喽）。还有一点，播放的话你直接解码完整文件再播放还是太慢了，在我的surface go2上（奔腾黄金处理器！）要等待25秒左右才能解码完然后才能听到音乐的播放。
 所以一个很明显的改善就是流式播放 stream play。就是在你解析的中途一并播放，比如说解析三帧然后直接播放，边解析边播放保证播放流畅不会中断或杂音，并且在解析途中可以给解析后数据套上各种effect chain（虽然我还没实践过）进行各种渲染后再播放（比如可以实现淡入淡出什么的）。总之能玩的花样很多，容我再慢慢摸索。
 
 好了，目前ffmpeg的部分就主要研究到这了，剩下的时间我先看看流式播放的，然后是解码其他音频格式文件的部分，最后再写一个音频库，重写一遍我之前用fmod写的音频播放器。
