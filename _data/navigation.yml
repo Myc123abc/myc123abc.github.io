@@ -9,23 +9,25 @@ main:
     url: /about/
 
 ffmpeg:
-  - title: preface
-    url: /blog/preface
-  - title: environment configuration
-    url: /blog/environment-configuration
-  - title: log
-    url: /blog/log
-  - title: file operation
-    url: /blog/file-operation
-  - tilte: avformat
-    url: /blog/avformat
-  - title: decode audio
-    url: /blog/decode-audio
+  - title: ffmpeg
+    childern:
+      - title: preface
+        url: /blog/preface
+      - title: environment configuration
+        url: /blog/environment-configuration
+      - title: log
+        url: /blog/log
+      - title: file operation
+        url: /blog/file-operation
+      - tilte: avformat
+        url: /blog/avformat
+      - title: decode audio
+        url: /blog/decode-audio
 
 # OK, maybe sidebar is not use for dictionaries like _pages, or _xxxx
 # categories:
 #   - title: Galgame Engine (Learning...)
-#     children:
+#     childern:
 #       - title: "DirectX12"
 #         url: /_pages/about.md
 #       - title: "game engine arch"
@@ -34,6 +36,6 @@ ffmpeg:
 #         url: /_pages/404.md
   
 #   - title: Other
-#     children:
+#     childern:
 #       - title: "other (none)"
 #         url: /_pages/404.md
