@@ -132,6 +132,9 @@ av_file_unmap(fileBuffer, fileSize);
 
 它这个方法好就好在可以直接用于windows平台，具体可以去看ffmpeg源码file.c中，有一部分是调用win32_open，然后直接将char*转化为wchar*再用win32 api去映射文件。OK。
 
+**注意：** 目前在Windows下测试的，`av_file_map`所打开的文件仅为只读权限，无法写入。
+{: .notice--info}
+
 <!-- link -->
 [question]: https://stackoverflow.com/questions/79393752/ffmpeg-avio-open-dir-returns-40-on-windows-even-when-directory-exists
 [source]: https://github.com/FFmpeg/FFmpeg/blob/85a327d9d06a26c7743f4b14902b848dab42c44f/libavformat/file.c#L324-L337
