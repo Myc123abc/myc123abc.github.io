@@ -112,6 +112,27 @@ windows的api或者c的或cpp的filesystem，这里我就先使用cpp的了，�
 **注意：** OK，还有点没说，b站的那个课程用的`avpriv_io_delete`与`avpriv_io_move`在ffmpeg 7.1版本中是废弃的。不过这俩也只是对文件的基本操作同样可以用其他api替代就是了。
 {: .notice}
 
+---
+
+很好，我的错，我找到了新的打开文件的方法，参考在ffmpeg的doc的example，[avio_reading.c][avio_reading.c]。
+```cpp
+auto     filename   = "D:/music/四季ノ唄.mp3";
+uint8_t* fileBuffer = nullptr;
+size_t   fileSize   = 0;
+auto ret = av_file_map(filename, &fileBuffer, &fileSize, 0, nullptr);
+if (ret < 0)
+{
+    exit(-1);
+}
+av_file_unmap(fileBuffer, fileSize);
+```
+不用多说，`av_file_map`可以将文件映射到内存，打开到`fileBuffer`中，并获得文件大小`fileSize`，后面俩参数跟日志有关这里就直接设为空了。
+
+`av_file_unmap`就是用于释放映射的文件数据，OK。
+
+它这个方法好就好在可以直接用于windows平台，具体可以去看ffmpeg源码file.c中，有一部分是调用win32_open，然后直接将char*转化为wchar*再用win32 api去映射文件。OK。
+
 <!-- link -->
 [question]: https://stackoverflow.com/questions/79393752/ffmpeg-avio-open-dir-returns-40-on-windows-even-when-directory-exists
 [source]: https://github.com/FFmpeg/FFmpeg/blob/85a327d9d06a26c7743f4b14902b848dab42c44f/libavformat/file.c#L324-L337
+[avio_reading.c]: https://ffmpeg.org/doxygen/4.2/avio_reading_8c-example.html
