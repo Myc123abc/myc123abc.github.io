@@ -235,7 +235,17 @@ reboot
 
 果然单机装linux才是王道啊。（啥时候再整一个）
 
+---
+
+很好，到周末了。我要重装。
+
+我打算直接把surface装成linux整机，然后虚拟机跑win。
+具体的guide我就不放了，看link。[Linux Surface][Linux Surface]
+
+
+
 <!-- link -->
 [archlinux.org]: https://archlinux.org
 [Installation_guid]: https://wiki.archlinux.org/title/Installation_guide
 [github install arch]: https://github.com/Myc123abc/arch
+[Linux Surface]: https://github.com/linux-surface/linux-surface
