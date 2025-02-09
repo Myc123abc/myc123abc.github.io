@@ -34,11 +34,7 @@ su -            // change to root
 # bashrc
 ```bash
 nvim ~/.bashrc
-
-PS1='\W \$ ' # 超简单提示符
-
-export http_proxy=xxx # 设置网络代理
-export https_proxy=xxx
+PS1='\[\033[38;5;118m\]\W \$ \[\033[0m\]' # 超简单提示符
 ```
 
 # network
@@ -49,6 +45,9 @@ nmcli device wifi connect 'name' password 'password'
 虽然networkmanager的操作界面看起来一点儿都不优雅，甚至还会污染提示符的颜色，而且密码也不是隐藏式输入。
 
 但它简单易用。
+
+**** 吐槽一下，linux-surface提供的pacman安装surface驱动的方法目前已经不适用。当前可行的办法是手动下载包然后pacman -U本地安装。不过我尝试安装之后，键盘断触的问题还是没解决。啧啧啧，微软真就不适配linux呗
+{: .notice}
 
 # tlp
 省电的
