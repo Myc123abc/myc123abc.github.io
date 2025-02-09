@@ -19,7 +19,7 @@ toc_icon: "list"
 1. 添加个人用户
 2. 安装sudo
 3. 切换用户
-```
+```bash
 useradd -m -G wheel username
 passwd username
 
@@ -49,6 +49,8 @@ nmcli device wifi connect 'name' password 'password'
 **** 吐槽一下，linux-surface提供的pacman安装surface驱动的方法目前已经不适用。当前可行的办法是手动下载包然后pacman -U本地安装。不过我尝试安装之后，键盘断触的问题还是没解决。啧啧啧，微软真就不适配linux呗
 {: .notice}
 
+好吧，解决了。安个gpm就能解决tty键盘断连的事儿。还得是大佬啊，如此敏锐的观察力。[Type Cover disconnects for a few seconds][keyboard disconnected]
+
 # tlp
 省电的
 ```bash
@@ -57,3 +59,5 @@ systemctl enable --now tlp.service
 systemctl mask systemd-rfkill.service
 systemctl mask systemd-rfkill.socket
 ```
+
+[keyboard disconnected]: https://github.com/linux-surface/linux-surface/issues/342#issuecomment-1908496161
