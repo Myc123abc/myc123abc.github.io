@@ -49,7 +49,7 @@ kitten @set-background-opacity 0.3
 echo -ne "\033]111\007"
 ```
 ** 如果你并没有透明终端的问题，kitten的那几行你就可以删掉了。
-{; .notice}
+{: .notice}
 
 哦，对了，用kitty的透明度还要解决这个问题的话，记得要把`dynamic_background_opacity`选项打开，就是为了动态调整opacity。当然还要打开远程控制的选项。
 
