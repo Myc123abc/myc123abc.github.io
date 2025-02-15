@@ -23,7 +23,7 @@ tags:
 `mini.nvim`。
 
 这里我就直接把nvim的mini的配置贴出来了。
----lua
+```lua
 return {
   {
     'echasnovski/mini.nvim',
@@ -33,11 +33,11 @@ return {
     end
   }
 }
----
+```
 总之就是mini有个misc模块，misc有个功能`setup_termbg_sync`可以用来同步终端边框的颜色与nvim的颜色一致。
 
 如果你的终端不是kitty启用透明度的话这样就可以解决了。但很不幸我是用的透明终端，仅用这个方式并不能解决我的问题，我打开后nvim整个也跟着终端变透明了，颜色甚至跟漂白了一样。并且这个插件也有个小bug，它有一定几率在nvim推出时并不能还原颜色，只是在我的电脑上是这样的。所以对我来说，我还需要这个。
----bash
+```bash
 #!/bin/bash
 
 kitten @set-background-opacity 1
@@ -47,7 +47,7 @@ nvim "$@"
 kitten @set-background-opacity 0.3
 
 echo -ne "\033]111\007"
----
+```
 ** 如果你并没有透明终端的问题，kitten的那几行你就可以删掉了。
 {; .notice}
 
